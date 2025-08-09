@@ -199,3 +199,35 @@ For questions or issues:
 ## 📄 License
 
 This project is for educational and demonstration purposes. Please ensure compliance with local laws and regulations when using AI for legal advice. 
+
+## Backend setup
+
+- Create a `.env` file in `backend/` with:
+
+```
+GEMINI_API_KEY=your_key_here
+```
+
+- Install deps and run:
+
+```
+pip install -r backend/requirements.txt
+uvicorn backend.app:app --reload
+```
+
+Ensure `backend/embeddings/` contains `faiss.index` and `chunk_metadata.pkl`. Build with:
+
+```
+python backend/build_index.py
+```
+
+## Frontend setup
+
+- In `frontend/`:
+
+```
+npm install
+npm run dev
+```
+
+Optionally set `NEXT_PUBLIC_API_URL` to your backend URL. 

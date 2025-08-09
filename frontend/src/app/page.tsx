@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Send,
   Bot,
@@ -27,10 +28,11 @@ import {
   Heart,
 } from "lucide-react";
 import { FaGavel, FaUserTie } from "react-icons/fa";
-import { askLegalQuestion } from "@/lib/api";
+import { askLegalQuestion, clearToken, getToken } from "@/lib/api";
 import { cn, tokens } from "@/lib/theme";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import Image from "next/image";
 
 interface Message {
   id: string;
@@ -47,12 +49,36 @@ const NAV_LINKS = [
 ] as const;
 
 const SERVICES = [
-  { name: "Contract Law", icon: FileText, description: "Drafting, reviewing, and negotiating contracts" },
-  { name: "Property Law", icon: Building2, description: "Real estate transactions and property disputes" },
-  { name: "Criminal Law", icon: Gavel, description: "Criminal defense and legal representation" },
-  { name: "Business Law", icon: Briefcase, description: "Corporate legal services and compliance" },
-  { name: "Family Law", icon: Heart, description: "Divorce, custody, and family matters" },
-  { name: "Civil Litigation", icon: Scale, description: "Dispute resolution and court representation" },
+  {
+    name: "Contract Law",
+    icon: FileText,
+    description: "Drafting, reviewing, and negotiating contracts",
+  },
+  {
+    name: "Property Law",
+    icon: Building2,
+    description: "Real estate transactions and property disputes",
+  },
+  {
+    name: "Criminal Law",
+    icon: Gavel,
+    description: "Criminal defense and legal representation",
+  },
+  {
+    name: "Business Law",
+    icon: Briefcase,
+    description: "Corporate legal services and compliance",
+  },
+  {
+    name: "Family Law",
+    icon: Heart,
+    description: "Divorce, custody, and family matters",
+  },
+  {
+    name: "Civil Litigation",
+    icon: Scale,
+    description: "Dispute resolution and court representation",
+  },
 ] as const;
 
 export default function Home() {
@@ -68,6 +94,14 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
+
+  useEffect(() => {
+    setHasToken(!!getToken());
+    const onStorage = () => setHasToken(!!getToken());
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,7 +148,12 @@ export default function Home() {
       <div className={cn("flex flex-col h-screen", tokens.bg.gradient)}>
         {/* Header */}
         <header className="bg-[rgba(15,28,36,0.9)] border-b border-[rgba(200,171,127,0.25)] shadow-sm">
-          <div className={cn(tokens.container, "py-4 flex items-center justify-between")}>
+          <div
+            className={cn(
+              tokens.container,
+              "py-4 flex items-center justify-between"
+            )}
+          >
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <FaGavel className="text-2xl text-[var(--primary-gold)]" />
@@ -181,7 +220,9 @@ export default function Home() {
                       <p
                         className={cn(
                           "text-xs mt-2",
-                          message.role === "user" ? "text-white/70" : "text-white/60"
+                          message.role === "user"
+                            ? "text-white/70"
+                            : "text-white/60"
                         )}
                       >
                         {message.timestamp.toLocaleTimeString([], {
@@ -252,19 +293,55 @@ export default function Home() {
               <FaGavel className="text-3xl text-[var(--primary-gold)]" />
               <div>
                 <h1 className="text-2xl font-bold">VerdictAI</h1>
-                <p className="text-xs text-[var(--primary-gold)]">advocate & law firm</p>
+                <p className="text-xs text-[var(--primary-gold)]">
+                  advocate & law firm
+                </p>
               </div>
             </div>
             <div className="hidden md:flex items-center gap-8 text-white/80">
               {NAV_LINKS.map((link) => (
-                <a key={link.href} href={link.href} className="hover:text-[var(--primary-gold)] transition-colors">
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-[var(--primary-gold)] transition-colors"
+                >
                   {link.label}
                 </a>
               ))}
             </div>
-            <Button onClick={() => setShowChat(true)} className="px-6">
-              Start Chat
-            </Button>
+            <div className="flex items-center gap-3">
+              {hasToken ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className="text-white/80 hover:text-[var(--primary-gold)]"
+                  >
+                    Profile
+                  </Link>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      clearToken();
+                      setHasToken(false);
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-white/80 hover:text-[var(--primary-gold)]"
+                  >
+                    Log in
+                  </Link>
+                  <Link href="/signup">
+                    <Button variant="outline">Sign up</Button>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </nav>
@@ -274,14 +351,26 @@ export default function Home() {
         <div className={tokens.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
-              <h1 className={cn(tokens.heading, "text-5xl md:text-6xl mb-6 leading-tight")}> 
-                Specifically Designed For <span className={tokens.text.gold}>Law Firm</span>
+              <h1
+                className={cn(
+                  tokens.heading,
+                  "text-5xl md:text-6xl mb-6 leading-tight"
+                )}
+              >
+                Specifically Designed For{" "}
+                <span className={tokens.text.gold}>Law Firm</span>
               </h1>
               <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl">
-                Our AI-powered legal assistant provides customer-centric advice to corporations and individuals, backed by comprehensive legal knowledge.
+                Our AI-powered legal assistant provides customer-centric advice
+                to corporations and individuals, backed by comprehensive legal
+                knowledge.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button onClick={() => setShowChat(true)} size="lg" className="gap-2">
+                <Button
+                  onClick={() => setShowChat(true)}
+                  size="lg"
+                  className="gap-2"
+                >
                   Ask Legal Question
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -292,26 +381,15 @@ export default function Home() {
               </div>
             </div>
             <div className="relative">
-              <Card className="p-8 shadow-2xl">
-                <div className="text-center">
-                  <FaGavel className="text-6xl text-[var(--primary-gold)] mx-auto mb-6" />
-                  <h3 className="text-2xl font-bold mb-4">AI-Powered Legal Solutions</h3>
-                  <p className="text-white/80 mb-6">Get instant legal guidance from our comprehensive database</p>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    {[
-                      "24/7 Available",
-                      "Expert Reviewed",
-                      "Instant Answers",
-                      "Secure & Private",
-                    ].map((label) => (
-                      <div key={label} className="flex items-center gap-2 text-white/70">
-                        <CheckCircle className="w-4 h-4 text-[var(--primary-gold)]" />
-                        <span>{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Card>
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-[rgba(200,171,127,0.25)]">
+                <Image
+                  src="/hero.jpg"
+                  alt="Law firm hero"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -328,11 +406,15 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className={cn(tokens.section, "bg-black/20")}> 
+      <section id="services" className={cn(tokens.section, "bg-black/20")}>
         <div className={tokens.container}>
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>Our Popular Services</h2>
-            <p className="text-xl text-white/80">Comprehensive legal solutions for every need</p>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+              Our Popular Services
+            </h2>
+            <p className="text-xl text-white/80">
+              Comprehensive legal solutions for every need
+            </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES.map((service) => (
@@ -340,7 +422,9 @@ export default function Home() {
                 <div className={tokens.iconBadge}>
                   <service.icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-semibold mt-4 mb-2">{service.name}</h3>
+                <h3 className="text-xl font-semibold mt-4 mb-2">
+                  {service.name}
+                </h3>
                 <p className="text-white/70 mb-4">{service.description}</p>
                 <button className="text-[var(--primary-gold)] hover:text-white transition-colors inline-flex items-center gap-2">
                   Learn More <ChevronRight className="w-4 h-4" />
@@ -356,30 +440,24 @@ export default function Home() {
         <div className={tokens.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <Card className="p-8 shadow-2xl">
-                <div className="text-center">
-                  <FaUserTie className="text-6xl text-[var(--primary-gold)] mx-auto mb-6" />
-                  <h3 className="text-2xl font-bold mb-4">Our Lawyers Provide Customer Centric Advice</h3>
-                  <p className="text-white/80 mb-6">
-                    Attorneys are trained to analyze legal issues and draft legal documents. Our AI-powered system combines this expertise with cutting-edge technology.
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    {["Specific Advice", "Business Security", "Property Law", "Shop & Office"].map(
-                      (label) => (
-                        <div key={label} className="flex items-center gap-2 text-white/70">
-                          <CheckCircle className="w-4 h-4 text-[var(--primary-gold)]" />
-                          <span>{label}</span>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </Card>
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-[rgba(200,171,127,0.25)]">
+                <Image
+                  src="/hero1.jpg"
+                  alt="Law firm hero"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
             </div>
             <div>
-              <h2 className={cn(tokens.heading, "text-4xl mb-6")}>Trusted Legal Advisor</h2>
+              <h2 className={cn(tokens.heading, "text-4xl mb-6")}>
+                Trusted Legal Advisor
+              </h2>
               <p className="text-xl text-white/80 mb-8">
-                Our AI-powered legal assistant provides comprehensive legal guidance backed by extensive knowledge of laws, regulations, and case precedents.
+                Our AI-powered legal assistant provides comprehensive legal
+                guidance backed by extensive knowledge of laws, regulations, and
+                case precedents.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {[
@@ -389,7 +467,9 @@ export default function Home() {
                   { value: "99%", label: "Success Rate" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
-                    <div className="text-3xl font-bold text-[var(--primary-gold)] mb-2">{stat.value}</div>
+                    <div className="text-3xl font-bold text-[var(--primary-gold)] mb-2">
+                      {stat.value}
+                    </div>
                     <div className="text-white/70">{stat.label}</div>
                   </div>
                 ))}
@@ -403,14 +483,33 @@ export default function Home() {
       <section className={tokens.section}>
         <div className={tokens.container}>
           <div className="grid md:grid-cols-3 gap-8">
-            {[{icon: Target, value: "81%", title: "Legal Methods", desc: "Advanced legal analysis techniques"},
-              {icon: TrendingUp, value: "68%", title: "Remote Advice", desc: "Digital legal consultation services"},
-              {icon: Shield, value: "79%", title: "Strong Cases", desc: "Robust legal case preparation"}].map((item) => (
+            {[
+              {
+                icon: Target,
+                value: "81%",
+                title: "Legal Methods",
+                desc: "Advanced legal analysis techniques",
+              },
+              {
+                icon: TrendingUp,
+                value: "68%",
+                title: "Remote Advice",
+                desc: "Digital legal consultation services",
+              },
+              {
+                icon: Shield,
+                value: "79%",
+                title: "Strong Cases",
+                desc: "Robust legal case preparation",
+              },
+            ].map((item) => (
               <Card key={item.title} className="p-8 text-center">
-                <div className={cn(tokens.iconBadge, "mx-auto mb-4")}> 
+                <div className={cn(tokens.iconBadge, "mx-auto mb-4")}>
                   <item.icon className="w-7 h-7" />
                 </div>
-                <div className="text-3xl font-bold text-[var(--primary-gold)] mb-2">{item.value}</div>
+                <div className="text-3xl font-bold text-[var(--primary-gold)] mb-2">
+                  {item.value}
+                </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-white/70">{item.desc}</p>
               </Card>
@@ -420,11 +519,15 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={cn(tokens.section, "bg-black/20")}> 
+      <section id="contact" className={cn(tokens.section, "bg-black/20")}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>Appointment Event</h2>
-            <p className="text-xl text-white/80">Get personalized legal assistance</p>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+              Appointment Event
+            </h2>
+            <p className="text-xl text-white/80">
+              Get personalized legal assistance
+            </p>
           </div>
           <form className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
@@ -472,16 +575,25 @@ export default function Home() {
       <section className={tokens.section}>
         <div className={tokens.container}>
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>What Our Clients Say</h2>
-            <p className="text-xl text-white/80">Trusted by businesses and individuals</p>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+              What Our Clients Say
+            </h2>
+            <p className="text-xl text-white/80">
+              Trusted by businesses and individuals
+            </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            {["VerdictAI provided me with clear, actionable legal guidance that saved me thousands in potential legal fees. The AI's knowledge is impressive and the responses are always professional.",
-              "The best legal tool I've used. Fast, accurate, and affordable. The AI understands complex legal questions and provides practical solutions."].map((quote, idx) => (
+            {[
+              "VerdictAI provided me with clear, actionable legal guidance that saved me thousands in potential legal fees. The AI's knowledge is impressive and the responses are always professional.",
+              "The best legal tool I've used. Fast, accurate, and affordable. The AI understands complex legal questions and provides practical solutions.",
+            ].map((quote, idx) => (
               <Card key={idx} className="p-8">
                 <div className="flex items-center gap-2 mb-4">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-[var(--primary-gold)] fill-current" />
+                    <Star
+                      key={i}
+                      className="w-5 h-5 text-[var(--primary-gold)] fill-current"
+                    />
                   ))}
                 </div>
                 <Quote className="w-8 h-8 text-[var(--primary-gold)] mb-4" />
@@ -489,8 +601,12 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-[rgba(200,171,127,0.12)] rounded-full" />
                   <div>
-                    <p className="font-semibold">{idx === 0 ? "Sarah M." : "Ahmed K."}</p>
-                    <p className="text-white/60 text-sm">{idx === 0 ? "Business Owner" : "Legal Consultant"}</p>
+                    <p className="font-semibold">
+                      {idx === 0 ? "Sarah M." : "Ahmed K."}
+                    </p>
+                    <p className="text-white/60 text-sm">
+                      {idx === 0 ? "Business Owner" : "Legal Consultant"}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -508,24 +624,47 @@ export default function Home() {
                 <FaGavel className="text-2xl text-[var(--primary-gold)]" />
                 <div>
                   <h3 className="text-xl font-bold">VerdictAI</h3>
-                  <p className="text-xs text-[var(--primary-gold)]">advocate & law firm</p>
+                  <p className="text-xs text-[var(--primary-gold)]">
+                    advocate & law firm
+                  </p>
                 </div>
               </div>
-              <p className="text-white/70">AI-powered legal assistance for everyone.</p>
+              <p className="text-white/70">
+                AI-powered legal assistance for everyone.
+              </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Services</h4>
               <ul className="space-y-2 text-white/70">
                 {SERVICES.slice(0, 4).map((s) => (
-                  <li key={s.name}><a href="#" className="hover:text-[var(--primary-gold)] transition-colors">{s.name}</a></li>
+                  <li key={s.name}>
+                    <a
+                      href="#"
+                      className="hover:text-[var(--primary-gold)] transition-colors"
+                    >
+                      {s.name}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-white/70">
-                {["About Us", "Privacy Policy", "Terms of Service", "Disclaimer"].map((label) => (
-                  <li key={label}><a href="#" className="hover:text-[var(--primary-gold)] transition-colors">{label}</a></li>
+                {[
+                  "About Us",
+                  "Privacy Policy",
+                  "Terms of Service",
+                  "Disclaimer",
+                ].map((label) => (
+                  <li key={label}>
+                    <a
+                      href="#"
+                      className="hover:text-[var(--primary-gold)] transition-colors"
+                    >
+                      {label}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -534,11 +673,21 @@ export default function Home() {
               <ul className="space-y-2 text-white/70">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:contact@verdictai.com" className="hover:text-[var(--primary-gold)] transition-colors">contact@verdictai.com</a>
+                  <a
+                    href="mailto:contact@verdictai.com"
+                    className="hover:text-[var(--primary-gold)] transition-colors"
+                  >
+                    contact@verdictai.com
+                  </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <a href="tel:+880123456789" className="hover:text-[var(--primary-gold)] transition-colors">+880 123 456 789</a>
+                  <a
+                    href="tel:+880123456789"
+                    className="hover:text-[var(--primary-gold)] transition-colors"
+                  >
+                    +880 123 456 789
+                  </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />

@@ -4,3 +4,11 @@ google-generativeai
 fastapi
 uvicorn
 pydantic
+
+bcrypt
+cryptography
+python-jose
+python-multipart
+SQLAlchemy
+passlib
+python-dotenv
