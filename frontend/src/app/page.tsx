@@ -374,10 +374,6 @@ export default function Home() {
                   Ask Legal Question
                   <ArrowRight className="w-5 h-5" />
                 </Button>
-                <Button variant="outline" size="lg" className="gap-2">
-                  <Play className="w-5 h-5" />
-                  Watch Demo
-                </Button>
               </div>
             </div>
             <div className="relative">
