@@ -2,7 +2,7 @@
 
 VerdictAI is a comprehensive legal assistance platform that combines a modern web interface with an AI-powered backend for answering legal questions.
 
-## 🏗️ Architecture
+## Architecture
 
 ### Frontend (Next.js + TypeScript)
 - **Location**: `frontend/`
