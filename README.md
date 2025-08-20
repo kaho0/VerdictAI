@@ -26,7 +26,7 @@ VerdictAI is a comprehensive legal assistance platform that combines a modern we
   - AI-powered question answering
   - CORS support for frontend integration
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ and npm
