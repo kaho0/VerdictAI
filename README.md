@@ -82,7 +82,7 @@ npm run dev
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000
 
-## 🎨 Features
+## Features
 
 ### Frontend Components
 - **Header**: Navigation with contact info
@@ -100,7 +100,7 @@ npm run dev
 - **GET /**: API health check
 - **CORS**: Configured for frontend integration
 
-## 🔧 Configuration
+## Configuration
 
 ### Frontend Customization
 - **Colors**: Edit `frontend/tailwind.config.ts` for theme colors
@@ -112,7 +112,7 @@ npm run dev
 - **CORS**: Modify allowed origins in `backend/app.py`
 - **RAG System**: Customize legal documents and embeddings
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 VerdictAI/
