@@ -1,10 +1,9 @@
 faiss-cpu
-sentence-transformers[cpu]
+sentence-transformers
 google-generativeai
 fastapi
 uvicorn
 pydantic
-
 bcrypt
 cryptography
 python-jose
@@ -13,6 +12,6 @@ SQLAlchemy
 passlib
 python-dotenv
 
-# Use CPU-only PyTorch to reduce size
+# Use CPU-only PyTorch
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch+cpu
+torch
