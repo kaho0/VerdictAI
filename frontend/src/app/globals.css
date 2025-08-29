@@ -22,14 +22,17 @@ body {
 
 /* Typography */
 .font-raleway {
-  font-family: 'Raleway', sans-serif;
+  font-family: var(--font-raleway), sans-serif;
 }
 
 .font-merriweather {
-  font-family: 'Merriweather', serif;
+  font-family: var(--font-merriweather), serif;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   letter-spacing: 0.2px;
 }
 
@@ -58,7 +61,8 @@ h1, h2, h3, h4 {
 
 /* Loading animation */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

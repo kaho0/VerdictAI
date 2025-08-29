@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { raleway, merriweather } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "VerdictAI - AI-Powered Legal Assistance",
@@ -13,19 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
       <body className="antialiased font-raleway bg-legal-gradient text-[var(--primary-off-white)] min-h-screen">
         {children}
       </body>

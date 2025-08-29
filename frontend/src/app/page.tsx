@@ -14,20 +14,18 @@ import {
   Building2,
   Gavel,
   ArrowRight,
-  CheckCircle,
   Star,
   Mail,
   Phone,
   MapPin,
   ChevronRight,
-  Play,
   Quote,
   Target,
   TrendingUp,
   Briefcase,
   Heart,
 } from "lucide-react";
-import { FaGavel, FaUserTie } from "react-icons/fa";
+import { FaGavel } from "react-icons/fa";
 import { askLegalQuestion, clearToken, getToken } from "@/lib/api";
 import { cn, tokens } from "@/lib/theme";
 import Button from "@/components/ui/Button";
@@ -593,7 +591,9 @@ export default function Home() {
                   ))}
                 </div>
                 <Quote className="w-8 h-8 text-[var(--primary-gold)] mb-4" />
-                <p className="text-white/80 mb-6 text-lg">"{quote}"</p>
+                <p className="text-white/80 mb-6 text-lg">
+                  &ldquo;{quote}&rdquo;
+                </p>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-[rgba(200,171,127,0.12)] rounded-full" />
                   <div>
