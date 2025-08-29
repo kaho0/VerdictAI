@@ -1,5 +1,5 @@
 faiss-cpu
-sentence-transformers
+sentence-transformers[cpu]
 google-generativeai
 fastapi
 uvicorn
@@ -12,3 +12,7 @@ python-multipart
 SQLAlchemy
 passlib
 python-dotenv
+
+# Force CPU-only PyTorch to reduce size
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.8.0+cpu
