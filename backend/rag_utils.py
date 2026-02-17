@@ -5,6 +5,8 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 from typing import List, Dict
+import logging
+import time
 
 # Resolve embeddings directory relative to this file to avoid cwd issues
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,27 +18,57 @@ _embed_model = None
 _index = None
 _metadata: List[Dict] | None = None
 _gemini = None
+_models_initialized = False
+_init_start_time = None
 
 
 def _lazy_init_models() -> None:
-    global _embed_model, _index, _metadata, _gemini
-    if _embed_model is None:
-        _embed_model = SentenceTransformer("all-MiniLM-L6-v2")
-    if _index is None:
-        if not os.path.exists(INDEX_PATH):
-            raise FileNotFoundError(f"FAISS index not found at {INDEX_PATH}")
-        _index = faiss.read_index(INDEX_PATH)
-    if _metadata is None:
-        if not os.path.exists(META_PATH):
-            raise FileNotFoundError(f"Chunk metadata not found at {META_PATH}")
-        with open(META_PATH, "rb") as f:
-            _metadata = pickle.load(f)
-    if _gemini is None:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise RuntimeError("GEMINI_API_KEY environment variable is not set")
-        genai.configure(api_key=api_key)
-        _gemini = genai.GenerativeModel("gemini-2.5-flash")
+    global _embed_model, _index, _metadata, _gemini, _models_initialized, _init_start_time
+    
+    if _models_initialized:
+        return
+        
+    if _init_start_time is None:
+        _init_start_time = time.time()
+        logging.info("Starting model initialization...")
+    
+    try:
+        if _embed_model is None:
+            logging.info("Loading sentence transformer model...")
+            _embed_model = SentenceTransformer("all-MiniLM-L6-v2")
+            logging.info("Sentence transformer loaded")
+            
+        if _index is None:
+            if not os.path.exists(INDEX_PATH):
+                raise FileNotFoundError(f"FAISS index not found at {INDEX_PATH}")
+            logging.info("Loading FAISS index...")
+            _index = faiss.read_index(INDEX_PATH)
+            logging.info("FAISS index loaded")
+            
+        if _metadata is None:
+            if not os.path.exists(META_PATH):
+                raise FileNotFoundError(f"Chunk metadata not found at {META_PATH}")
+            logging.info("Loading metadata...")
+            with open(META_PATH, "rb") as f:
+                _metadata = pickle.load(f)
+            logging.info("Metadata loaded")
+            
+        if _gemini is None:
+            api_key = os.getenv("GEMINI_API_KEY")
+            if not api_key:
+                raise RuntimeError("GEMINI_API_KEY environment variable is not set")
+            logging.info("Configuring Gemini...")
+            genai.configure(api_key=api_key)
+            _gemini = genai.GenerativeModel("gemini-2.5-flash")
+            logging.info("Gemini configured")
+            
+        _models_initialized = True
+        init_time = time.time() - _init_start_time
+        logging.info(f"All models initialized in {init_time:.2f} seconds")
+        
+    except Exception as e:
+        logging.error(f"Model initialization failed: {e}")
+        raise
 
 
 def retrieve_chunks(query: str, top_k: int = 5) -> List[Dict]:
@@ -48,13 +80,25 @@ def retrieve_chunks(query: str, top_k: int = 5) -> List[Dict]:
 
 def answer_with_rag(query: str) -> str:
     _lazy_init_models()
-    top_chunks = retrieve_chunks(query)
-    context = "\n\n".join([
-        f"{c['chunk_type'].capitalize()} from {c['act_title']}:\n{c['content']}" for c in top_chunks
-    ])
+    
+    # Start timing for performance monitoring
+    start_time = time.time()
+    
+    top_chunks = retrieve_chunks(query, top_k=3)  # Reduced from 5 to 3 for speed
+    
+    # Create more concise context
+    context_parts = []
+    for c in top_chunks:
+        # Truncate very long content to speed up processing
+        content = c['content']
+        if len(content) > 1000:
+            content = content[:1000] + "..."
+        context_parts.append(f"{c['chunk_type'].capitalize()} from {c['act_title']}:\n{content}")
+    
+    context = "\n\n".join(context_parts)
 
-    prompt = f"""
-You are a legal assistant. Use the following legal texts to answer the user's question.
+    # More concise prompt
+    prompt = f"""Using these legal texts, answer concisely:
 
 {context}
 
@@ -62,4 +106,9 @@ Question: {query}
 Answer:"""
 
     response = _gemini.generate_content(prompt)
+    
+    # Log performance
+    total_time = time.time() - start_time
+    logging.info(f"RAG query completed in {total_time:.2f}s")
+    
     return response.text

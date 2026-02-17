@@ -85,6 +85,16 @@ async def health():
         "gemini_key_configured": bool(os.getenv("GEMINI_API_KEY")),
     }
 
+@app.get("/warmup")
+async def warmup():
+    """Pre-initialize all models to improve first query performance"""
+    try:
+        rag_utils._lazy_init_models()
+        return {"status": "warmed_up", "message": "All models initialized successfully"}
+    except Exception as exc:
+        logger.exception("Warmup failed: %s", exc)
+        raise HTTPException(status_code=503, detail="Model warmup failed")
+
 
 def get_db():
     db = SessionLocal()
