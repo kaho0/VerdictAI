@@ -209,7 +209,7 @@ export default function Home() {
                         "rounded-2xl px-4 py-3",
                         message.role === "user"
                           ? "bg-[#1E5A47] text-white"
-                          : "bg-[rgba(15,28,36,0.85)] border border-[rgba(200,171,127,0.25)]"
+                          : "bg-[rgba(15,28,36,0.85)]"
                       )}
                     >
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -238,7 +238,7 @@ export default function Home() {
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[rgba(200,171,127,0.18)] flex items-center justify-center">
                     <Bot className="w-4 h-4 text-[var(--primary-gold)]" />
                   </div>
-                  <div className="bg-[rgba(15,28,36,0.85)] border border-[rgba(200,171,127,0.25)] rounded-2xl px-4 py-3">
+                  <div className="bg-[rgba(15,28,36,0.85)] rounded-2xl px-4 py-3">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin text-[var(--primary-gold)]" />
                       <span className="text-sm text-white/80">
@@ -260,7 +260,7 @@ export default function Home() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Ask me about legal matters, regulations, or case law..."
-                      className="w-full px-4 py-3 pr-12 rounded-2xl border border-[rgba(200,171,127,0.25)] bg-[#0e1a22] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)] focus:border-transparent"
+                      className="w-full px-4 py-3 pr-12 rounded-2xl bg-[#0e1a22] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)] focus:border-transparent"
                       disabled={isLoading}
                     />
                     <Button
@@ -375,7 +375,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative">
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-[rgba(200,171,127,0.25)]">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="/hero.jpg"
                   alt="Law firm hero"
@@ -434,7 +434,7 @@ export default function Home() {
         <div className={tokens.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-[rgba(200,171,127,0.25)]">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="/hero1.jpg"
                   alt="Law firm hero"
@@ -529,7 +529,7 @@ export default function Home() {
                 <label className="block mb-2 font-semibold">Name</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+                  className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
                   placeholder="Your full name"
                 />
               </div>
@@ -537,24 +537,24 @@ export default function Home() {
                 <label className="block mb-2 font-semibold">Email</label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+                  className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
                   placeholder="your@email.com"
                 />
               </div>
             </div>
             <div>
-              <label className="block mb-2 font-semibold">Phone</label>
-              <input
-                type="tel"
-                className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
-                placeholder="Your phone number"
-              />
-            </div>
+                <label className="block mb-2 font-semibold">Phone</label>
+                <input
+                  type="tel"
+                  className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+                  placeholder="Your phone number"
+                />
+              </div>
             <div>
               <label className="block mb-2 font-semibold">Message</label>
               <textarea
                 rows={4}
-                className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+                className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
                 placeholder="Describe your legal matter..."
               ></textarea>
             </div>

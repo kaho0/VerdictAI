@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className={cn(tokens.bg.gradient, "min-h-screen flex items-center justify-center p-4")}> 
-      <div className={cn(tokens.surface.card, "w-full max-w-md p-8")}> 
+      <div className={cn(tokens.surface.card, "w-full max-w-md p-8 border-none")}> 
         <h1 className={cn(tokens.heading, "text-3xl mb-2 text-center")}>
           Welcome back
         </h1>
@@ -53,7 +53,7 @@ export default function LoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+              className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
               placeholder="your-username"
               required
             />
@@ -64,7 +64,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 border border-[rgba(200,171,127,0.25)] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
+              className="w-full px-4 py-3 rounded-lg bg-[#0e1a22]/80 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)]"
               placeholder="••••••••"
               required
             />
