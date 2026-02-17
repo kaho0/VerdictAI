@@ -91,7 +91,7 @@ npm run dev
 - **About**: Company information and expertise
 - **Team**: Attorney profiles
 - **LegalAI**: AI chat interface (connects to backend)
-- **Contact**: Appointment booking form
+- **Contact**: ment booking form
 - **CTA**: Call-to-action sections
 - **Footer**: Complete site footer
 

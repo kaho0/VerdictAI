@@ -263,14 +263,14 @@ export default function Home() {
                       className="w-full px-4 py-3 pr-12 rounded-2xl bg-[#0e1a22] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)] focus:border-transparent"
                       disabled={isLoading}
                     />
-                    <Button
+                    <button
                       type="submit"
                       disabled={!input.trim() || isLoading}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-xl"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg bg-[var(--primary-gold)] text-[#0f1c24] hover:brightness-110 p-2.5 border-none transition-all focus:outline-none focus:ring-2 focus:ring-[var(--primary-gold)] disabled:opacity-50"
                       aria-label="Send message"
                     >
                       <Send className="w-4 h-4" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </form>
@@ -367,7 +367,7 @@ export default function Home() {
                 <Button
                   onClick={() => setShowChat(true)}
                   size="lg"
-                  className="gap-2"
+                  className="gap-2 bg-[var(--primary-gold)] text-[#0f1c24] hover:brightness-110 px-6 py-3 rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-gold)] border-none"
                 >
                   Ask Legal Question
                   <ArrowRight className="w-5 h-5" />
@@ -403,7 +403,7 @@ export default function Home() {
       <section id="services" className={cn(tokens.section, "bg-black/20")}>
         <div className={tokens.container}>
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4 pt-5")}>
               Our Popular Services
             </h2>
             <p className="text-xl text-white/80">
@@ -516,7 +516,7 @@ export default function Home() {
       <section id="contact" className={cn(tokens.section, "bg-black/20")}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4 pt-6")}>
               Appointment Event
             </h2>
             <p className="text-xl text-white/80">
@@ -559,7 +559,10 @@ export default function Home() {
               ></textarea>
             </div>
             <div className="text-center">
-              <Button size="lg">Submit</Button>
+             <Button className="h-12 px-8 text-xl rounded-xl">
+  Submit
+</Button>
+
             </div>
           </form>
         </div>
@@ -569,7 +572,7 @@ export default function Home() {
       <section className={tokens.section}>
         <div className={tokens.container}>
           <div className="text-center mb-16">
-            <h2 className={cn(tokens.heading, "text-4xl mb-4")}>
+            <h2 className={cn(tokens.heading, "text-4xl mb-4 pt-8 mt-3")}>
               What Our Clients Say
             </h2>
             <p className="text-xl text-white/80">

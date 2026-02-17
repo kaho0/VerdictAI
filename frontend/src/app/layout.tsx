@@ -16,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
-      <body className="antialiased font-raleway bg-legal-gradient text-[var(--primary-off-white)] min-h-screen">
+      <body 
+        className="antialiased font-raleway bg-legal-gradient text-[var(--primary-off-white)] min-h-screen"
+        suppressHydrationWarning
+      >
         <ToastProvider />
         {children}
       </body>

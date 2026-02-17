@@ -50,7 +50,7 @@ export default function LoginPage() {
 
   return (
     <div className={cn(tokens.bg.gradient, "min-h-screen flex items-center justify-center p-4")}> 
-      <div className={cn(tokens.surface.card, "w-full max-w-md p-8 border-none")}> 
+      <div className="w-full max-w-md p-8 rounded-2xl bg-[rgba(15,28,36,0.9)] backdrop-blur-md border border-[#DCBC8C]/30 shadow-xl"> 
         <h1 className={cn(tokens.heading, "text-3xl mb-2 text-center")}>
           Welcome back
         </h1>

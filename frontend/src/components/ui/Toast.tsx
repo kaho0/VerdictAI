@@ -37,13 +37,18 @@ export default function ToastProvider() {
       {toasts.map(toast => (
         <div
           key={toast.id}
-          className={`px-4 py-3 rounded-lg shadow-lg text-white font-medium transition-all transform ${
+          className={`px-6 py-4 rounded-xl shadow-2xl text-white font-medium transition-all transform animate-in slide-in-from-right-2 backdrop-blur-sm ${
             toast.type === "success" 
-              ? "bg-green-600" 
-              : "bg-red-600"
+              ? "bg-gradient-to-r from-green-600 to-green-700 border border-green-500/30" 
+              : "bg-gradient-to-r from-red-600 to-red-700 border border-red-500/30"
           }`}
         >
-          {toast.message}
+          <div className="flex items-center gap-3">
+            <div className={`w-2 h-2 rounded-full ${
+              toast.type === "success" ? "bg-green-300" : "bg-red-300"
+            }`} />
+            {toast.message}
+          </div>
         </div>
       ))}
     </div>
