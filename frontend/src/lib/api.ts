@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://verdict-ai.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://verdictai-9841.onrender.com";
 
 export interface AskResponse {
   answer: string;
