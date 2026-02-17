@@ -84,7 +84,11 @@ export default function SignupPage() {
               required
             />
           </div>
-          <Button type="submit" disabled={isLoading} className="w-full">
+          <Button 
+            type="submit" 
+            disabled={isLoading} 
+            className="w-full bg-[var(--primary-gold)] text-[#0f1c24] hover:brightness-110 px-5 py-2.5 rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-gold)] border-none"
+          >
             {isLoading ? "Creating account..." : "Create account"}
           </Button>
         </form>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { raleway, merriweather } from "@/lib/fonts";
+import ToastProvider from "@/components/ui/Toast";
 
 export const metadata: Metadata = {
   title: "VerdictAI - AI-Powered Legal Assistance",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
       <body className="antialiased font-raleway bg-legal-gradient text-[var(--primary-off-white)] min-h-screen">
+        <ToastProvider />
         {children}
       </body>
     </html>

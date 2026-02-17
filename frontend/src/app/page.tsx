@@ -145,7 +145,7 @@ export default function Home() {
     return (
       <div className={cn("flex flex-col h-screen", tokens.bg.gradient)}>
         {/* Header */}
-        <header className="bg-[rgba(15,28,36,0.9)] border-b border-[rgba(200,171,127,0.25)] shadow-sm">
+        <header className="bg-[rgba(15,28,36,0.9)] shadow-sm">
           <div
             className={cn(
               tokens.container,
@@ -251,7 +251,7 @@ export default function Home() {
             </div>
 
             {/* Input Form */}
-            <div className="border-t border-[rgba(200,171,127,0.25)] bg-[rgba(15,28,36,0.9)] p-4">
+            <div className="bg-[rgba(15,28,36,0.9)] p-4">
               <form onSubmit={handleSubmit} className={tokens.container}>
                 <div className="flex gap-3">
                   <div className="flex-1 relative">
@@ -284,7 +284,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="bg-[rgba(15,28,36,0.9)] backdrop-blur-md border-b border-[rgba(200,171,127,0.25)] sticky top-0 z-50">
+      <nav className="bg-[rgba(15,28,36,0.9)] backdrop-blur-md sticky top-0 z-50">
         <div className={tokens.container}>
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-3">
@@ -612,7 +612,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0e1a22] border-t border-[rgba(200,171,127,0.25)] py-12">
+      <footer className="bg-[#0e1a22] py-12">
         <div className={tokens.container}>
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -692,7 +692,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-[rgba(200,171,127,0.25)] mt-8 pt-8 text-center text-white/70">
+          <div className="mt-8 pt-8 text-center text-white/70">
             <p>&copy; 2024 VerdictAI. All rights reserved.</p>
           </div>
         </div>

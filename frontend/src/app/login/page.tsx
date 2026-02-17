@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { cn, tokens } from "@/lib/theme";
 import { login, saveToken, verifyToken } from "@/lib/api";
+import { showToast } from "@/components/ui/Toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,8 +26,23 @@ export default function LoginPage() {
       try { await verifyToken(auth.access_token); } catch {}
       router.push("/profile");
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Login failed";
-      setError(msg);
+      let errorMessage = "Login failed";
+      
+      if (err instanceof Error) {
+        try {
+          const errorObj = JSON.parse(err.message);
+          if (errorObj && errorObj.detail) {
+            errorMessage = errorObj.detail;
+          } else {
+            errorMessage = err.message;
+          }
+        } catch {
+          errorMessage = err.message;
+        }
+      }
+      
+      showToast(errorMessage, "error");
+      setError(null);
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +85,11 @@ export default function LoginPage() {
               required
             />
           </div>
-          <Button type="submit" disabled={isLoading} className="w-full">
+          <Button 
+            type="submit" 
+            disabled={isLoading} 
+            className="w-full bg-[var(--primary-gold)] text-[#0f1c24] hover:brightness-110 px-5 py-2.5 rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-gold)] border-none"
+          >
             {isLoading ? "Signing in..." : "Sign in"}
           </Button>
         </form>

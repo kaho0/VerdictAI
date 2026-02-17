@@ -23,6 +23,7 @@ export default function Button({
         tokens.button.base,
         tokens.button[variant],
         tokens.button.size[size],
+        "border-none",
         className
       )}
       {...props}
